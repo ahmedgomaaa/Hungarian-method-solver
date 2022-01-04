@@ -65,14 +65,8 @@ void GetNumOfZerosAndUncrossed(int arr[4][4], int Crossed[4][4], int& r1, int& r
 				r[i]++;
 				col[j]++;
 			}
-	r1 = r[0];
-	r2 = r[1];
-	r3 = r[2];
-	r4 = r[3];
-	col1 = col[0];
-	col2 = col[1];
-	col3 = col[2];
-	col4 = col[3];
+	r1 = r[0]; r2 = r[1]; r3 = r[2]; r4 = r[3];
+	col1 = col[0];  col2 = col[1]; col3 = col[2]; col4 = col[3];
 }
 int GetSmallestUncoverd(int arr[4][4], int Crossed[4][4]) {
 	int smallest = 0x7FFFFFFF;
@@ -139,14 +133,8 @@ int main()
 	printarrr(arr);
 	GetNumOfZeros(arr, r1, r2, r3, r4, col1, col2, col3, col4);
 	cout << " -------------111111111------- \n";
-	r[0] = r1;
-	r[1] = r2;
-	r[2] = r3;
-	r[3] = r4;
-	col[0] = col1;
-	col[1] = col2;
-	col[2] = col3;
-	col[3] = col4;
+	r[0] = r1; r[1] = r2; r[2] = r3; r[3] = r4;
+	col[0] = col1; col[1] = col2; col[2] = col3; col[3] = col4;
 	printRowAndCol(r, col);
 	int rowzeros[4] = { r1,r2,r3,r4 };
 	int colzeros[4] = { col1,col2,col3,col4 };
