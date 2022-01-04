@@ -16,7 +16,6 @@ void printRowAndCol(int r[4], int col[4]) {
 	<< "\nCOL4 = " << col[3]
 	<< '\n';
 }
-
 int FindMinInCol(int arr[4][4]) {
 	int mincol[4] = {};
 	mincol[0] = arr[0][0];
@@ -63,38 +62,16 @@ void SubCol(int arr[4][4]) {
 		for (int j = 0; j < 4; j++)
 			arr[j][i] = arr[j][i] - MinInCol[k];
 }
-void GetNumOfZeros(int arr[4][4], int &r1, int &r2, int &r3, int &r4, int &col1, int &col2, int &col3,int &col4) {
-	int r[4] = {};
-	int col[4] = {};
-	r[0] = r1;
-	r[1] = r2;
-	r[2] = r3;
-	r[3] = r4;
-	col[0] = col1;
-	col[1] = col2;
-	col[2] = col3;
-	col[3] = col4;
+void GetNumOfZeros(int arr[4][4], int* r, int *col) {
 	for (int i = 0; i < 4; i++)
 		for (int j = 0; j < 4; j++)
 			if (arr[i][j] == 0) {
 				r[i]++;
 				col[j]++;
 			}
-	r1 = r[0];
-	r2 = r[1];
-	r3 = r[2];
-	r4 = r[3];
-	col1 = col[0];
-	col2 = col[1];
-	col3 = col[2];
-	col4 = col[3];
-
 }
-void GetNumOfZerosAndUncrossed(int arr[4][4],int Crossed[4][4] ,int& r1, int& r2, int& r3, int& r4, int& col1, int& col2, int& col3, int& col4) {
-	r1 = r2 = r3 = r4 = col1 = col2 = col3 = col4 = 0;
-	int r[4] = { 0,0,0,0 };
-	int col[4] = { 0,0,0,0 };
-	
+void GetNumOfZerosAndUncrossed(int arr[4][4],int Crossed[4][4] ,int *r, int *col) {
+	r[0] = r[1] = r[2] = r[3] = col[0] = col[1] = col[2] = col[3] = 0;
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -105,15 +82,6 @@ void GetNumOfZerosAndUncrossed(int arr[4][4],int Crossed[4][4] ,int& r1, int& r2
 			}
 		}
 	}
-	r1 = r[0];
-	r2 = r[1];
-	r3 = r[2];
-	r4 = r[3];
-	col1 = col[0];
-	col2 = col[1];
-	col3 = col[2];
-	col4 = col[3];
-
 }
 int max(int a, int b) {
 	return (a > b) ? 1 : -1;
@@ -179,14 +147,6 @@ int main()
 	int SizeOfArr = 4;
 	int r[4] = {0,0,0,0};
 	int col[4] = {0,0,0,0};
-	int r1=0;
-	int r2= 0;
-	int r3=0;
-	int r4=0;
-	int col1=0;
-	int col2=0;
-	int col3=0;
-	int col4=0;
 	FindMinInRow(arr);
 	SubRow(arr);
 	cout << " -------------------- \n";
@@ -196,35 +156,26 @@ int main()
 	SubCol(arr);
 	cout << " -------------------- \n";
 	printarrr(arr);
-	GetNumOfZeros(arr, r1, r2, r3, r4, col1, col2, col3, col4);
+	GetNumOfZeros(arr, r, col);
 	cout << " -------------111111111------- \n";
-	r[0] = r1;
-	r[1] = r2;
-	r[2] = r3;
-	r[3] = r4;
-	col[0] = col1;
-	col[1] = col2;
-	col[2] = col3;
-	col[3] = col4;
 	printRowAndCol(r, col);
-	rowzeros[0] = r1;
-	rowzeros[1] = r2;
-	rowzeros[2] = r3;
-	rowzeros[3] = r4;
-	int colzeros[4];
-	colzeros[0] = col1;
-	colzeros[1] = col2;
-	colzeros[2] = col3;
-	colzeros[3] = col4;
-	int maxzeros = 0; int tmp;
+	rowzeros[0] = r[0];
+	rowzeros[1] = r[1];
+	rowzeros[2] = r[2];
+	rowzeros[3] = r[3];
+	// int colzeros[4]; ///////////////////////////////////////////////
+	colzeros[0] = col[0];
+	colzeros[1] = col[1];
+	colzeros[2] = col[2];
+	colzeros[3] = col[3];
+	int maxzeros = 0; 
 	int indexofmaxzeros;
 	//loop to get the index of the row with highest number of zeros + the highest nymber of zeros
 	for (int i = 0; i < 4 ;  i++)
 	{
-		tmp = rowzeros[i]; 
-		if (tmp > maxzeros)
+		if (rowzeros[i] > maxzeros)
 		{
-			maxzeros = tmp;
+			maxzeros = rowzeros[i];
 			indexofmaxzeros = i;
 		}
 	}
@@ -250,25 +201,8 @@ int main()
 	//with the highest number of zeros FIRST, then search again!.
 	CompareMaxOfRowsAndCol(maxzeros, maxzeroscol, indexofmaxzeros, indexofmaxzeroscol, CrossedArr, CoveringLines);
 	printarrr(CrossedArr);
-	
-	GetNumOfZerosAndUncrossed(arr, CrossedArr, r1, r2, r3, r4, col1, col2, col3, col4);
-	rowzeros[0] = r1;
-	rowzeros[1] = r2;
-	rowzeros[2] = r3;
-	rowzeros[3] = r4;
-	colzeros[0] = col1;
-	colzeros[1] = col2;
-	colzeros[2] = col3;
-	colzeros[3] = col4;
+	GetNumOfZerosAndUncrossed(arr, CrossedArr, r, col);
 	cout << "??????????-------------------- \n";
-	r[0] = r1;
-	r[1] = r2;
-	r[2] = r3;
-	r[3] = r4;
-	col[0] = col1;
-	col[1] = col2;
-	col[2] = col3;
-	col[3] = col4;
 	printRowAndCol(r, col);
 	// printRowAndCol(r1, r2, r3, r4, col1, col2, col3, col4);
 	int colmaxzeros2 = 0;
@@ -305,54 +239,42 @@ int main()
 	
 	printarrr(CrossedArr);
 	cout << endl << CoveringLines << endl;
-	GetNumOfZerosAndUncrossed(arr, CrossedArr, r1, r2, r3, r4, col1, col2, col3, col4);
+	GetNumOfZerosAndUncrossed(arr, CrossedArr, r, col);
 	cout << "\n\nPRINTED VALUES:    \n\n\n\n";
-	rowzeros[0] = r1;
-	rowzeros[1] = r2;
-	rowzeros[2] = r3;
-	rowzeros[3] = r4;
-	colzeros[0] = col1;
-	colzeros[1] = col2;
-	colzeros[2] = col3;
-	colzeros[3] = col4;
+	rowzeros[0] = r[0];
+	rowzeros[1] = r[1];
+	rowzeros[2] = r[2];
+	rowzeros[3] = r[3];
+	colzeros[0] = col[0];
+	colzeros[1] = col[1];
+	colzeros[2] = col[2];
+	colzeros[3] = col[3];
 	cout << "\n----------------XXXX-------------\n\n"; 
 	cout << " -------------------- \n";
-	r[0] = r1;
-	r[1] = r2;
-	r[2] = r3;
-	r[3] = r4;
-	col[0] = col1;
-	col[1] = col2;
-	col[2] = col3;
-	col[3] = col4;
 	printRowAndCol(r, col);
-	// printRowAndCol(r1, r2, r3, r4, col1, col2, col3, col4);
 	cout << "\n----------------XXXX-------------END\n\n"; 
-//	cout << "\nCOVERING LINES::::: " << CoveringLines << endl;
 	//////////// ITERATIVE 33333333333333
-	int colmaxzeros3 = 0; int tmp4 = 0;
+	int colmaxzeros3 = 0; 
 	int indexofcolmaxzeros3 = 0;
 	//loop to get the index of the col with highest number of zeros + the highest nymber of zeros
 	for (int i = 0; i < 4; i++)
 	{
-		tmp4 = colzeros[i];
-		if (tmp4 > colmaxzeros3)
+		if (colzeros[i] > colmaxzeros3)
 		{
-			colmaxzeros3 = tmp4;
+			colmaxzeros3 = colzeros[i];
 			indexofcolmaxzeros3 = i;
 		}
 	}
 	cout << "\n\n ITERATIVE 3 :  col with max zeros is col num:  = " << (indexofcolmaxzeros3 + 1) << "\n\n";
 	cout << "\n\tAnd has =" << colmaxzeros3 << " Zeors!!!!!";
-	int rowmaxzeros3 = 0; int tmp5 = 0;
+	int rowmaxzeros3 = 0; 
 	int indexofrowmaxzeros3 = 0;
 	//loop to get the index of the row with highest number of zeros + the highest nymber of zeros
 	for (int i = 0; i < 4; i++)
 	{
-		tmp5 = rowzeros[i];
-		if (tmp5 > rowmaxzeros3)
+		if (rowzeros[i] > rowmaxzeros3)
 		{
-			rowmaxzeros3 = tmp5;
+			rowmaxzeros3 = rowzeros[i];
 			indexofrowmaxzeros3 = i;
 		}
 	}
@@ -364,83 +286,62 @@ int main()
 	CompareMaxOfRowsAndCol(rowmaxzeros3, colmaxzeros3, indexofrowmaxzeros3, indexofcolmaxzeros3, CrossedArr, CoveringLines);
 	cout << "\n-----------AFTER ITERATIVE 3 : -----------\n";
 	printarrr(CrossedArr); 
-	GetNumOfZerosAndUncrossed(arr, CrossedArr, r1, r2, r3, r4, col1, col2, col3, col4);
-	rowzeros[0] = r1;
-	rowzeros[1] = r2;
-	rowzeros[2] = r3;
-	rowzeros[3] = r4;
-	colzeros[0] = col1;
-	colzeros[1] = col2;
-	colzeros[2] = col3;
-	colzeros[3] = col4;
+	GetNumOfZerosAndUncrossed(arr, CrossedArr, r, col);
+	rowzeros[0] = r[0];
+	rowzeros[1] = r[1];
+	rowzeros[2] = r[2];
+	rowzeros[3] = r[3];
+	colzeros[0] = col[0];
+	colzeros[1] = col[1];
+	colzeros[2] = col[2];
+	colzeros[3] = col[3];
 	cout << " ??????????-------------------- \n";
-	r[0] = r1;
-	r[1] = r2;
-	r[2] = r3;
-	r[3] = r4;
-	col[0] = col1;
-	col[1] = col2;
-	col[2] = col3;
-	col[3] = col4;
 	printRowAndCol(r, col);
-	// printRowAndCol(r1, r2, r3, r4, col1, col2, col3, col4);
-
-	int colmaxzeros8 = 0; int tmp14 = 0;
+	int colmaxzeros8 = 0; 
 	int indexofcolmaxzeros8 = 0;
 	//loop to get the index of the col with highest number of zeros + the highest nymber of zeros
 	for (int i = 0; i < 4; i++)
 	{
-		tmp14 = colzeros[i];
-		if (tmp14 > colmaxzeros8)
+		if (colzeros[i] > colmaxzeros8)
 		{
-			colmaxzeros8 = tmp4;
+			colmaxzeros8 = colzeros[i];
 			indexofcolmaxzeros8 = i;
 		}
 	}
 	cout << "\n ITERATIVE 3 :  col with max zeros is col num:  = " << (indexofcolmaxzeros8 + 1) << "\n";
 	cout << "And has =" << colmaxzeros8 << " Zeors!!!!!"<< '\n';
-	int rowmaxzeros8 = 0; int tmp15 = 0;
+	int rowmaxzeros8 = 0; 
 	int indexofrowmaxzeros8 = 0;
 	//loop to get the index of the row with highest number of zeros + the highest nymber of zeros
 	for (int i = 0; i < 4; i++)
 	{
-		tmp5 = rowzeros[i];
-		if (tmp5 > rowmaxzeros8)
+		if (rowzeros[i] > rowmaxzeros8)
 		{
-			rowmaxzeros8 = tmp15;
+			rowmaxzeros8 = rowzeros[i];
 			indexofrowmaxzeros8 = i;
 		}
 	}
 	cout << "ITERATIVE 3 :  row with max zeros is row nummmmmmmmm:  = " << (indexofrowmaxzeros3 + 1) << "\n";
 	cout << "And has =" << rowmaxzeros3 << " Zeors!!!!!\n";
-	if (r1 == 0 && r2 == 0 && r3 == 0 && r4 == 0 && col1 == 0 && col2 == 0 && col3 == 0 && col4 == 0);
+	if(r[0]==0 && r[1]==0 && r[2]==0 && r[3]==0 && col[0]==0 && col[1]==0 && col[2]==0 && col[3]==0);
 	else {
 		CompareMaxOfRowsAndCol(rowmaxzeros8, colmaxzeros8, indexofrowmaxzeros8, indexofcolmaxzeros8, CrossedArr, CoveringLines);
 		printarrr(CrossedArr);
-		GetNumOfZerosAndUncrossed(arr, CrossedArr, r1, r2, r3, r4, col1, col2, col3, col4);
+		GetNumOfZerosAndUncrossed(arr, CrossedArr, r, col);
 		cout << " \n\nCovering Lines: " << CoveringLines << endl;
-		rowzeros[0] = r1;
-		rowzeros[1] = r2;
-		rowzeros[2] = r3;
-		rowzeros[3] = r4;
-		colzeros[0] = col1;
-		colzeros[1] = col2;
-		colzeros[2] = col3;
-		colzeros[3] = col4;
+		rowzeros[0] = r[0];
+		rowzeros[1] = r[1];
+		rowzeros[2] = r[2];
+		rowzeros[3] = r[3];
+		colzeros[0] = col[0];
+		colzeros[1] = col[1];
+		colzeros[2] = col[2];
+		colzeros[3] = col[3];
 		cout << " ??????????-------------------- \n";
-		r[0] = r1;
-	r[1] = r2;
-	r[2] = r3;
-	r[3] = r4;
-	col[0] = col1;
-	col[1] = col2;
-	col[2] = col3;
-	col[3] = col4;
 	printRowAndCol(r, col);
-		// printRowAndCol(r1, r2, r3, r4, col1, col2, col3, col4);
 	}
 	
-	if (r1==0 && r2 == 0 && r3 == 0 && r4 == 0 && col1 == 0 && col2 == 0 && col3 == 0 && col4 == 0)
+	if(r[0]==0 && r[1]==0 && r[2]==0 && r[3]==0 && col[0]==0 && col[1]==0 && col[2]==0 && col[3]==0)
 	{
 		if (CoveringLines==SizeOfArr) 
 		{
@@ -462,26 +363,17 @@ int main()
 			AddSmallestUncoverdToPivot(arr, CrossedArr, smallestUncovered);
 			cout << "\n___________________________999999999999....!!.....\n";
 			printarrr(arr);
-			GetNumOfZeros(arr, r1, r2, r3, r4, col1, col2, col3, col4);
-			rowzeros[0] = r1;
-			rowzeros[1] = r2;
-			rowzeros[2] = r3;
-			rowzeros[3] = r4;
-			colzeros[0] = col1;
-			colzeros[1] = col2;
-			colzeros[2] = col3;
-			colzeros[3] = col4;
+			GetNumOfZeros(arr, r, col);
+			rowzeros[0] = r[0];
+			rowzeros[1] = r[1];
+			rowzeros[2] = r[2];
+			rowzeros[3] = r[3];
+			colzeros[0] = col[0];
+			colzeros[1] = col[1];
+			colzeros[2] = col[2];
+			colzeros[3] = col[3];
 			cout << "\n----------------XXXX-------------\n\n";
-			r[0] = r1;
-	r[1] = r2;
-	r[2] = r3;
-	r[3] = r4;
-	col[0] = col1;
-	col[1] = col2;
-	col[2] = col3;
-	col[3] = col4;
-	printRowAndCol(r, col);
-			// printRowAndCol(r1, r2, r3, r4, col1, col2, col3, col4);
+			printRowAndCol(r, col);
 			int colmaxzeros4 = 0; 
 			int indexofcolmaxzeros4 = 0;
 			//loop to get the index of the col with highest number of zeros + the highest nymber of zeros
@@ -495,15 +387,14 @@ int main()
 			}
 			cout << "\n\n ITERATIVE 4 :  col with max zeros is col numberrrr:  = " << (indexofcolmaxzeros4 + 1) << "\n\n";
 			cout << "\n\tAnd has =" << colmaxzeros4 << " Zeors!!!!!";
-			int rowmaxzeros4 = 0; int tmp7 = 0;
+			int rowmaxzeros4 = 0; 
 			int indexofrowmaxzeros4 = 0;
 			//loop to get the index of the row with highest number of zeros + the highest nymber of zeros
 			for (int i = 0; i < 4; i++)
 			{
-				tmp7 = rowzeros[i];
-				if (tmp7 > rowmaxzeros4)
+				if (rowzeros[i] > rowmaxzeros4)
 				{
-					rowmaxzeros4 = tmp7;
+					rowmaxzeros4 = rowzeros[i];
 					indexofrowmaxzeros4 = i;
 				}
 			}
@@ -514,49 +405,38 @@ int main()
 			CompareMaxOfRowsAndCol(rowmaxzeros4, colmaxzeros4, indexofrowmaxzeros4, indexofcolmaxzeros4, CrossedArr, CoveringLines);
 			cout << "\n\n-----------AFTER ITERATIVE 4 : -----------\n\n";
 			printarrr(CrossedArr);
-			GetNumOfZerosAndUncrossed(arr, CrossedArr, r1, r2, r3, r4, col1, col2, col3, col4);
-			rowzeros[0] = r1;
-			rowzeros[1] = r2;
-			rowzeros[2] = r3;
-			rowzeros[3] = r4;
-			colzeros[0] = col1;
-			colzeros[1] = col2;
-			colzeros[2] = col3;
-			colzeros[3] = col4;
+			GetNumOfZerosAndUncrossed(arr, CrossedArr, r, col);
+			rowzeros[0] = r[0];
+			rowzeros[1] = r[1];
+			rowzeros[2] = r[2];
+			rowzeros[3] = r[3];
+			colzeros[0] = col[0];
+			colzeros[1] = col[1];
+			colzeros[2] = col[2];
+			colzeros[3] = col[3];
 			cout << " ??????????-------------------- \n";
-			r[0] = r1;
-	r[1] = r2;
-	r[2] = r3;
-	r[3] = r4;
-	col[0] = col1;
-	col[1] = col2;
-	col[2] = col3;
-	col[3] = col4;
-	printRowAndCol(r, col);
-			// printRowAndCol(r1, r2, r3, r4, col1, col2, col3, col4);
-			int colmaxzeros5 = 0; int tmp8 = 0;
+			printRowAndCol(r, col);
+			int colmaxzeros5 = 0; 
 			int indexofcolmaxzeros5 = 0;
 			//loop to get the index of the col with highest number of zeros + the highest nymber of zeros
 			for (int i = 0; i < 4; i++)
 			{
-				tmp8 = colzeros[i];
-				if (tmp8 > colmaxzeros5)
+				if (colzeros[i] > colmaxzeros5)
 				{
-					colmaxzeros5 = tmp8;
+					colmaxzeros5 = colzeros[i];
 					indexofcolmaxzeros5 = i;
 				}
 			}
 			cout << "\n\n ITERATIVE 5 :  col with max zeros is col numberrrr:  = " << (indexofcolmaxzeros5 + 1) << "\n\n";
 			cout << "\n\tAnd has =" << colmaxzeros5 << " Zeors!!!!!";
-			int rowmaxzeros5 = 0; int tmp9 = 0;
+			int rowmaxzeros5 = 0; 
 			int indexofrowmaxzeros5 = 0;
 			//loop to get the index of the row with highest number of zeros + the highest nymber of zeros
 			for (int i = 0; i < 4; i++)
 			{
-				tmp9 = rowzeros[i];
-				if (tmp9 > rowmaxzeros5)
+				if (rowzeros[i] > rowmaxzeros5)
 				{
-					rowmaxzeros5 = tmp9;
+					rowmaxzeros5 = rowzeros[i];
 					indexofrowmaxzeros5 = i;
 				}
 			}
@@ -565,27 +445,17 @@ int main()
 			CompareMaxOfRowsAndCol(rowmaxzeros5, colmaxzeros5, indexofrowmaxzeros5, indexofcolmaxzeros5, CrossedArr, CoveringLines);
 			cout << "\n\n-----------AFTER ITERATIVE 5 : -----------\n\n";
 			printarrr(CrossedArr);
-			GetNumOfZerosAndUncrossed(arr, CrossedArr, r1, r2, r3, r4, col1, col2, col3, col4);
+			GetNumOfZerosAndUncrossed(arr, CrossedArr, r, col);
 			cout << " ??????????----------555555---------- \n";
-
-			rowzeros[0] = r1;
-			rowzeros[1] = r2;
-			rowzeros[2] = r3;
-			rowzeros[3] = r4;
-			colzeros[0] = col1;
-			colzeros[1] = col2;
-			colzeros[2] = col3;
-			colzeros[3] = col4;
-			r[0] = r1;
-	r[1] = r2;
-	r[2] = r3;
-	r[3] = r4;
-	col[0] = col1;
-	col[1] = col2;
-	col[2] = col3;
-	col[3] = col4;
-	printRowAndCol(r, col);
-			// printRowAndCol(r1, r2, r3, r4, col1, col2, col3, col4);
+			rowzeros[0] = r[0];
+			rowzeros[1] = r[1];
+			rowzeros[2] = r[2];
+			rowzeros[3] = r[3];
+			colzeros[0] = col[0];
+			colzeros[1] = col[1];
+			colzeros[2] = col[2];
+			colzeros[3] = col[3];
+			printRowAndCol(r, col);
 			int colmaxzeros6 = 0;
 			int indexofcolmaxzeros6 = 0;
 			//loop to get the index of the col with highest number of zeros + the highest nymber of zeros
@@ -599,15 +469,14 @@ int main()
 			}
 			cout << "\n\n ITERATIVE 6 :  col with max zeros is col numberrrr:  = " << (indexofcolmaxzeros6 + 1) << "\n\n";
 			cout << "\n\tAnd has =" << colmaxzeros6 << " Zeors!!!!!";
-			int rowmaxzeros6 = 0; int tmp11 = 0;
+			int rowmaxzeros6 = 0; 
 			int indexofrowmaxzeros6 = 0;
 			//loop to get the index of the row with highest number of zeros + the highest nymber of zeros
 			for (int i = 0; i < 4; i++)
 			{
-				tmp11 = rowzeros[i];
-				if (tmp11 > rowmaxzeros6)
+				if (rowzeros[i] > rowmaxzeros6)
 				{
-					rowmaxzeros6 = tmp11;
+					rowmaxzeros6 = rowzeros[i];
 					indexofrowmaxzeros6 = i;
 				}
 			}
@@ -616,36 +485,28 @@ int main()
 			CompareMaxOfRowsAndCol(rowmaxzeros6, colmaxzeros6, indexofrowmaxzeros6, indexofcolmaxzeros6, CrossedArr, CoveringLines);
 			cout << "\n\n-----------AFTER ITERATIVE 6 : -----------\n\n";
 			printarrr(CrossedArr);
-			GetNumOfZerosAndUncrossed(arr, CrossedArr, r1, r2, r3, r4, col1, col2, col3, col4);
-			rowzeros[0] = r1;
-			rowzeros[1] = r2;
-			rowzeros[2] = r3;
-			rowzeros[3] = r4;
-			colzeros[0] = col1;
-			colzeros[1] = col2;
-			colzeros[2] = col3;
-			colzeros[3] = col4;
+			GetNumOfZerosAndUncrossed(arr, CrossedArr, r, col);
+			rowzeros[0] = r[0];
+			rowzeros[1] = r[1];
+			rowzeros[2] = r[2];
+			rowzeros[3] = r[3];
+			colzeros[0] = col[0];
+			colzeros[1] = col[1];
+			colzeros[2] = col[2];
+			colzeros[3] = col[3];
 			cout << " ??????????-------------------- \n";
-			r[0] = r1;
-	r[1] = r2;
-	r[2] = r3;
-	r[3] = r4;
-	col[0] = col1;
-	col[1] = col2;
-	col[2] = col3;
-	col[3] = col4;
+	
 	printRowAndCol(r, col);
 			// printRowAndCol(r1, r2, r3, r4, col1, col2, col3, col4);
 			
-			int colmaxzeros7 = 0; int tmp12 = 0;
+			int colmaxzeros7 = 0;
 			int indexofcolmaxzeros7 = 0;
 			//loop to get the index of the col with highest number of zeros + the highest nymber of zeros
 			for (int i = 0; i < 4; i++)
 			{
-				tmp12 = colzeros[i];
-				if (tmp12 > colmaxzeros7)
+				if (colzeros[i] > colmaxzeros7)
 				{
-					colmaxzeros7 = tmp12;
+					colmaxzeros7 = colzeros[i];
 					indexofcolmaxzeros7 = i;
 				}
 			}
